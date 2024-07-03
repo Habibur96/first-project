@@ -5,6 +5,8 @@ import {
   Student,
   UserName,
 } from './student.interface';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 const userNameSchema = new Schema<UserName>({
   firstName: { type: String, required: true },
@@ -29,11 +31,17 @@ const localGuardianSchema = new Schema<LocalGuardian>({
 });
 
 const studentSchema = new Schema<Student>({
-  id: { type: String, required:true, unique:true },
+  id: { type: String, required: true, unique: true },
+  password: {
+    type: String,
+    required: true,
+    unique: true,
+    maxlength: [20, 'Password can not be more than 20 charters'],
+  },
   name: { type: userNameSchema, required: true },
   gender: { type: String, enum: ['male', 'female', 'other'], required: true },
   dateOfBirth: { type: String, required: true },
-  email: { type: String, required: true, unique:true },
+  email: { type: String, required: true, unique: true },
   contactNo: { type: String, required: true },
   emergencyContactNo: { type: String, required: true },
   bloodGroup: {
@@ -46,6 +54,24 @@ const studentSchema = new Schema<Student>({
   localGuardian: { type: localGuardianSchema, required: true },
   profileImage: { type: String },
   isActive: { type: String, enum: ['active', 'blocked'], default: 'active' },
+});
+
+//pre save middleware/hook : will work on create()   save()
+studentSchema.pre('save', async function (next) {
+  // console.log(this, 'Pre hook : we will save data');
+  //hashing password and save into db
+
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next()
+});
+
+//post save middlewere/hook
+studentSchema.post('save', function () {
+  console.log(this, 'Post hook : we saved our data');
 });
 
 export const StudentModel = model<Student>('Student', studentSchema);
