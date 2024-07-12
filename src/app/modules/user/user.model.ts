@@ -3,10 +3,7 @@ import { TUser } from './user.interface';
 
 const userSchema = new Schema<TUser>(
   {
-    id: {
-      type: String,
-      required: true,
-    },
+    id: String,
     password: {
       type: String,
       required: true,
@@ -22,6 +19,7 @@ const userSchema = new Schema<TUser>(
     status: {
       type: String,
       enum: ['in-progress', 'bolcked'],
+      default: 'in-progress',
     },
   },
   {
@@ -29,4 +27,4 @@ const userSchema = new Schema<TUser>(
   },
 );
 
-export const User = model<TUser>('User', userSchema);
+export const UserModel = model<TUser>('User', userSchema);

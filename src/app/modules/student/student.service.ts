@@ -1,12 +1,6 @@
 
 import { StudentModel } from './student.model';
-import { TStudent } from './sudent.interface';
 
-const createStudentIntoDB = async (student: TStudent) => {
-  const result = await StudentModel.create(student);
-
-  return result;
-};
 
 const getAllStudentsFromDB = async () => {
   const result = await StudentModel.find();
@@ -25,7 +19,7 @@ const deleteStudentFromDB = async (id: string) => {
 };
 
 export const studentServices = {
-  createStudentIntoDB,
+  
   getAllStudentsFromDB,
   getSingleStudentFromDB,
   deleteStudentFromDB,
