@@ -13,8 +13,9 @@ const createStusent = async (req: Request, res: Response) => {
       message: 'Students is created succesfully',
       data: result,
     });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    console.log(err)
+  
     res.status(500).json({
       success: false,
       message: err.message || 'something went wrong',
@@ -31,6 +32,7 @@ const getAllStudents = async (req: Request, res: Response) => {
       message: 'Students are retrieved succesfully',
       data: result,
     });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -50,6 +52,7 @@ const getSingleStudent = async (req: Request, res: Response) => {
       message: 'Student retrieved succesfully',
       data: result,
     });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -69,6 +72,7 @@ const deleteStudent = async (req: Request, res: Response) => {
       message: 'Student deleted succesfully',
       data: result,
     });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
