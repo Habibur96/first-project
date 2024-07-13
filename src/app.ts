@@ -13,9 +13,11 @@ app.use(cors());
 //application routes
 app.use('/api/v1', router);
 
+
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
+
 
 //Global Error handling
 app.use(globalErrorhandler);

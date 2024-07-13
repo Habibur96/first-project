@@ -1,14 +1,10 @@
 // import studentValidationSchema from './student.validation';
-import { NextFunction } from 'express';
+import { RequestHandler } from 'express';
 import { userServices } from './user.service';
 import { sendResponse } from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 
-const createStusent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const createStusent: RequestHandler = async (req, res, next) => {
   try {
     const { password, student: studentData } = req.body;
 
