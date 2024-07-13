@@ -1,8 +1,10 @@
 import { Schema, model } from 'mongoose';
-
-import bcrypt from 'bcrypt';
-import config from '../../config';
-import { TGuardian, TLocalGuardian, TStudent, TUserName } from './sudent.interface';
+import {
+  TGuardian,
+  TLocalGuardian,
+  TStudent,
+  TUserName,
+} from './sudent.interface';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: { type: String, required: true },
@@ -35,12 +37,7 @@ const studentSchema = new Schema<TStudent>(
       unique: true,
       ref: 'User',
     },
-    password: {
-      type: String,
-      required: true,
 
-      maxlength: [20, 'Password can not be more than 20 charters'],
-    },
     name: { type: userNameSchema, required: true },
     gender: { type: String, enum: ['male', 'female', 'other'], required: true },
     dateOfBirth: { type: String, required: true },
@@ -56,7 +53,6 @@ const studentSchema = new Schema<TStudent>(
     guardian: { type: guardianSchema, required: true },
     localGuardian: { type: localGuardianSchema, required: true },
     profileImage: { type: String },
- 
 
     isDeleted: {
       type: Boolean,
@@ -75,24 +71,7 @@ studentSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
-//pre save middleware/hook : will work on create()   save()
-studentSchema.pre('save', async function (next) {
-  // console.log(this, 'Pre hook : we will save data');
-  //hashing password and save into db
 
-  const user = this; //doc
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds),
-  );
-  next();
-});
-
-//post save middleware/hook
-studentSchema.post('save', function (doc, next) {
-  doc.password = '';
-  next();
-});
 
 //Query Middleware
 
