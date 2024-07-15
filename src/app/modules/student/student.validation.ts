@@ -36,33 +36,38 @@ const localGuardianValidationSchema = z.object({
     .nonempty({ message: "Local guardian's address is required" }),
 });
 
-const studentValidationSchema = z.object({
-  id: z.string().nonempty({ message: 'ID is required' }),
-  password: z.string().nonempty({ message: 'Password is required' }).max(20),
-  name: userNameValidationSchema,
-  gender: z.enum(['male', 'female','other'], {
-    message: "Gender must be 'male' 'female' or 'other'",
+const CreateStudentValidationSchema = z.object({
+  body: z.object({
+    password: z.string().nonempty({ message: 'Password is required' }).max(20),
+    student: z.object({
+      name: userNameValidationSchema,
+      gender: z.enum(['male', 'female', 'other'], {
+        message: "Gender must be 'male' 'female' or 'other'",
+      }),
+      dateOfBirth: z
+        .string()
+        .nonempty({ message: 'Date of birth is required' }),
+      email: z.string().email({ message: 'Invalid email address' }),
+      contactNo: z.string().nonempty({ message: 'Contact number is required' }),
+      emergencyContactNo: z
+        .string()
+        .nonempty({ message: 'Emergency contact number is required' }),
+      bloodGroup: z
+        .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
+        .optional(),
+      presentAddress: z
+        .string()
+        .nonempty({ message: 'Present address is required' }),
+      permanentAddress: z
+        .string()
+        .nonempty({ message: 'Permanent address is required' }),
+      guardian: guardianValidationSchema,
+      localGuardian: localGuardianValidationSchema,
+      profileImage: z.string().optional(),
+    }),
   }),
-  dateOfBirth: z.string().nonempty({ message: 'Date of birth is required' }),
-  email: z.string().email({ message: 'Invalid email address' }),
-  contactNo: z.string().nonempty({ message: 'Contact number is required' }),
-  emergencyContactNo: z
-    .string()
-    .nonempty({ message: 'Emergency contact number is required' }),
-  bloodGroup: z
-    .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
-    .optional(),
-  presentAddress: z
-    .string()
-    .nonempty({ message: 'Present address is required' }),
-  permanentAddress: z
-    .string()
-    .nonempty({ message: 'Permanent address is required' }),
-  guardian: guardianValidationSchema,
-  localGuardian: localGuardianValidationSchema,
-  profileImage: z.string().optional(),
-  isActive: z.enum(['active', 'blocked']).default('active'),
-  isDeleted: z.boolean().default(false)
 });
 
-export default studentValidationSchema;
+export const studentValidations = {
+   CreateStudentValidationSchema,
+};
