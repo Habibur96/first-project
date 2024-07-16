@@ -3,6 +3,7 @@ import { TStudent } from '../student/sudent.interface';
 import { UserModel } from './user.model';
 import { TUser } from './user.interface';
 import { StudentModel } from '../student/student.model';
+import { TAcademicSemester } from '../academicSemester/academicSmester.interface';
 
 const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   //create a user object
@@ -13,8 +14,10 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   //set student role
   userData.role = 'student';
 
-  //set manually generated id
-  userData.id = '2030100001';
+  const generatedStudentId = (payload: TAcademicSemester) => {};
+
+  //set generated id
+  userData.id = generatedStudentId(TAcademicSemester);
 
   //creae a user
   const newUser = await UserModel.create(userData);

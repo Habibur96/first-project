@@ -40,7 +40,7 @@ const studentSchema = new Schema<TStudent>(
 
     name: { type: userNameSchema, required: true },
     gender: { type: String, enum: ['male', 'female', 'other'], required: true },
-    dateOfBirth: { type: String, required: true },
+    dateOfBirth: { type: Date },
     email: { type: String, required: true, unique: true },
     contactNo: { type: String, required: true },
     emergencyContactNo: { type: String, required: true },
@@ -53,6 +53,7 @@ const studentSchema = new Schema<TStudent>(
     guardian: { type: guardianSchema, required: true },
     localGuardian: { type: localGuardianSchema, required: true },
     profileImage: { type: String },
+    admissionSemester: { type: Schema.Types.ObjectId, ref: 'AcademicSemister' },
 
     isDeleted: {
       type: Boolean,
@@ -70,8 +71,6 @@ const studentSchema = new Schema<TStudent>(
 studentSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
-
-
 
 //Query Middleware
 
