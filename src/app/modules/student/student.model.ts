@@ -40,7 +40,7 @@ const studentSchema = new Schema<TStudent>(
 
     name: { type: userNameSchema, required: true },
     gender: { type: String, enum: ['male', 'female', 'other'], required: true },
-    dateOfBirth: { type: Date },
+    dateOfBirth: { type: String },
     email: { type: String, required: true, unique: true },
     contactNo: { type: String, required: true },
     emergencyContactNo: { type: String, required: true },
