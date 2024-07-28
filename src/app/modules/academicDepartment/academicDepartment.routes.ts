@@ -15,6 +15,10 @@ router.post(
 );
 
 router.get('/:departmentId', AcademicDepartmentControllers.getSingleAcademicDepartment);
+router.delete(
+  '/:departmentId',
+  AcademicDepartmentControllers.deleteAcademicDepartment,
+);
 
 router.patch(
   '/:departmentId',

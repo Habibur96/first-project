@@ -16,7 +16,6 @@ const createAcademicFaculty = catchAsync(async (req, res) => {
   });
 });
 
-
 const getAllAcademicFaculties = catchAsync(async (req, res) => {
   const result = await AcademicFacultyServices.getAllAcademicFacultiesFromDB();
 
@@ -40,6 +39,8 @@ const getSingleAcademicFaculty = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
 
 const updateAcademicFaculty = catchAsync(async (req, res) => {
   const { faculityId } = req.params;

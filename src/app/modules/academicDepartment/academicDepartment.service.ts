@@ -16,6 +16,10 @@ const getSingleAcademicDepartmentFromDB = async (id: string) => {
   return result;
 };
 
+const deleteDepartmentFromDB = async (id: string) => {
+  const result = await AcademicDepartment.updateOne({ id }, { isDeleted: true });
+  return result;
+};
 const updateAcademicDepartmentIntoDB = async (
   id: string,
   payload: Partial<TAcademicDepartment>,
@@ -34,5 +38,6 @@ export const AcademicDepartmentServices = {
   createAcademicDepartmentIntoDB,
   getAllAcademicDepartmentsFromDB,
   getSingleAcademicDepartmentFromDB,
+  deleteDepartmentFromDB,
   updateAcademicDepartmentIntoDB,
 };
