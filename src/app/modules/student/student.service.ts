@@ -5,8 +5,30 @@ import { UserModel } from '../user/user.model';
 import httpStatus from 'http-status';
 import { TStudent } from './sudent.interface';
 
-const getAllStudentsFromDB = async () => {
-  const result = await StudentModel.find()
+const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
+  const queryObj = { ...query };
+
+  const studentSearchableFields = ['email', 'name.firstName', 'presentAddress'];
+
+  let searchTerm = '';
+  if (query?.searchTerm) {
+    searchTerm = query?.searchTerm as string;
+  }
+  const searchQuery = StudentModel.find({
+    $or: studentSearchableFields.map((field) => ({
+      [field]: {
+        $regex: searchTerm,
+        $options: 'i',
+      },
+    })),
+  });
+
+  //Filterigng
+  const excluedFields = ['searchTerm', 'sort', 'limit'];
+  excluedFields.forEach((el) => delete queryObj[el]);
+
+  const filterquery = searchQuery
+    .find(queryObj)
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
@@ -14,7 +36,22 @@ const getAllStudentsFromDB = async () => {
         path: 'academicFaculty',
       },
     });
-  return result;
+
+  let sort = '-createdAt';
+  if (query.sort) {
+    sort = query.sort as string;
+  }
+
+  const sortQuery =  filterquery.sort(sort);
+
+  let limit = 1;
+  if (query.limit) {
+    limit = query.limit as number
+  }
+  const limitQuery = await sortQuery.limit(limit)
+  
+    
+    return limitQuery;
 };
 
 const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
