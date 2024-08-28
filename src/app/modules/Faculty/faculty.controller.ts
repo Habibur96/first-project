@@ -4,6 +4,19 @@ import { FacultyServices } from './faculty.service';
 import catchAsync from '../../utils/catchAsyns';
 import { sendResponse } from '../../utils/sendResponse';
 
+
+const createFaculty = catchAsync(async (req, res) => {
+  const result = await FacultyServices.createFacultyIntoDB(
+    req.body,
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Academic faculty is created succesfully',
+    data: result,
+  });
+});
+
 const getSingleFaculty = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await FacultyServices.getSingleFacultyFromDB( id );
@@ -53,6 +66,7 @@ const deleteFaculty = catchAsync(async (req, res) => {
 });
 
 export const FacultyControllers = {
+  createFaculty,
   getAllFaculties,
   getSingleFaculty,
   deleteFaculty,
